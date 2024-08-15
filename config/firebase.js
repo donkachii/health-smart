@@ -4,13 +4,13 @@ import { GoogleAuthProvider } from 'firebase/auth';
 
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyBU2tL9zHgBnLWyYHvPZYcQ-lqwHaUoB2s',
-	authDomain: 'flash-mint.firebaseapp.com',
-	projectId: 'flash-mint',
-	storageBucket: 'flash-mint.appspot.com',
-	messagingSenderId: '830018042142',
-	appId: '1:830018042142:web:5173d1dab8be2d1c4df10f',
-	measurementId: 'G-BXY2YT4NEQ',
+	apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+	authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+	projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+	storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+	messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGE_SENDER_ID,
+	appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+	measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
