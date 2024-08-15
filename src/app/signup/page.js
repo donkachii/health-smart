@@ -147,7 +147,7 @@ const SignUp = () => {
 					</form>
 					<p className='text-center text-slate-900 text-sm mt-4'>
 						Already have an account?{' '}
-						<a href='signin' className='text-white hover:underline'>
+						<a href='/signin' className='text-white hover:underline'>
 							SignIn
 						</a>
 					</p>
