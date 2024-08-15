@@ -1,0 +1,62 @@
+/* .....................................sign up page................ */
+
+
+.signup{
+  background-image:url('../public/assets/virtual-cover.jpg');
+  background-repeat:no-repeat;
+  background-position: center;
+  background-size: cover;
+  height:100vh;
+  width:100%;
+}
+.overlay{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content:center;
+  background-color: rgba(16, 1, 0, 0.3);
+  height:100vh;
+}
+.signupForm{
+  width:40%;
+  padding:30px 50px;
+  background: rgba( 255, 255, 255, 0.25 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  -webkit-backdrop-filter: blur( 2px );
+  backdrop-filter: blur( 2px );
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  @apply flex flex-col
+
+}
+.signupHead{
+  @apply text-2xl lg:text-4xl font-bold text-center mb-8 text-blue-700 hover:text-white;
+  font-family: 'Pirata One', cursive;
+}
+.label{
+  @apply block text-slate-900 font-semibold mb-2;
+  font-family: 'Pirata One', cursive;
+}
+.input{
+  @apply w-full p-1 lg:p-2 border-none outline-none rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400;
+
+}
+.btnSignup{
+  @apply w-full bg-blue-500 text-white font-semibold p-2 rounded-lg mb-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-blue-400;
+  font-family: 'Pirata One', cursive;
+  letter-spacing: 5px;
+}
+.btnGoogle{
+  @apply flex justify-between items-center  bg-white text-red-700  hover:bg-red-700 hover:text-white p-2 rounded-lg;
+  
+}
+
+@media only screen and (max-width:600px){
+  .signupForm{
+    width:90%;
+  }
+  .btnGoogle, .btnSignup{
+    font-size: 12px;
+  }
+
+}
