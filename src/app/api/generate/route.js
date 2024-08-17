@@ -14,6 +14,7 @@ You are a flashcard creator. Your task is to generate concise and effective flas
 8. Tailor for different level of flashcards to the user's specified preferences. 
 9. If given a body of a text, extract the most important and relevant information for the flashcards.
 10. Aim to create a balanced set of balanced set of flashcards that covers the topic comprehensively.
+11. Only Generate 10 cards.
 
 Remember, the goal is to facilitate effective learning and retention of information through the flashcards. 
 
@@ -36,7 +37,7 @@ export async function POST(req) {
   const data = await req.text();
 
   const completion = await openai.chat.completions.create({
-    model: "meta-llama/llama-3.1-8b-instruct:free",
+    model: "gpt-3.5-turbo",
     messages: [
       { role: "system", content: systemPrompt },
       { role: "user", content: data },
@@ -44,7 +45,7 @@ export async function POST(req) {
     response_format: { type: "json_object" },
   });
 
-  const flashcards = completion.choices[0].message.content;
+  const flashcards = JSON.parse(completion.choices[0].message.content);
 
-  return NextResponse.json(flashcards, { status: 200 });
+  return NextResponse.json(flashcards.flashcards, { status: 200 });
 }
