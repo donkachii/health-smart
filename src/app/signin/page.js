@@ -7,7 +7,6 @@ import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import swal from 'sweetalert';
 import { useRouter } from 'next/navigation';
 
-
 const SignIn = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -16,7 +15,18 @@ const SignIn = () => {
 	const handleSigninUser = async (e) => {
 		e.preventDefault();
 		try {
-			await signInWithEmailAndPassword(auth, email, password);
+			const userCredential = await signInWithEmailAndPassword(
+				auth,
+				email,
+				password
+			);
+			const user = userCredential.user;
+			const userId = user.uid; // Get the user's unique ID
+
+			// Store the uid in local storage
+			localStorage.setItem('userId', userId);
+
+			console.log('User ID:', userId);
 			swal({
 				title: '👏🏽',
 				text: 'Welcome',
@@ -34,19 +44,27 @@ const SignIn = () => {
 		}
 	};
 
-	// Function to handle Login with google
-	const handleLoginWithGoogle = async () => {
-	
+	// Function to handle Login with Google
+	const handleLoginWithGoogle = async (e) => {
+		e.preventDefault();
+
 		try {
-			await signInWithPopup(auth, googleAuthProvider);
+			const result = await signInWithPopup(auth, googleAuthProvider);
+			const userId = result.user.uid; // Get the user's unique ID
+
+			// Store the uid in local storage
+			localStorage.setItem('userId', userId);
+
+			console.log('User ID:', userId);
 			swal({
 				title: '👏🏽',
 				text: 'You have successfully logged in! Welcome to HealthSmart',
 				icon: 'success',
 				button: 'OK',
 			});
-			navigate('/');
+			router.push('/');
 		} catch (error) {
+			console.error('Error during Google Sign-In:', error);
 			swal({
 				title: 'Oops😞',
 				text: 'Sorry',
