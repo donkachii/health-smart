@@ -6,19 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import GenerateFlashcards from "@/components/GenerateFlashcards";
 
 const DashboardHome = () => {
-  const [cards, setCards] = useState([{ question: "Hi", answer: "I am good" }]);
-  const [flipped, setFlipped] = useState([]);
-  const [text, setText] = useState("");
-  const [name, setName] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-
-  const router = useRouter();
-
-  const handleSubmit = async () => {};
-
-  const [topic, setTopic] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
   // useEffect(() => {
   //   // Load flashcards from Firebase
   //   const loadFlashcards = async () => {
@@ -55,7 +42,7 @@ const DashboardHome = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">100</div>
+              <div className="text-2xl font-bold">30</div>
             </CardContent>
           </Card>
 
@@ -67,18 +54,18 @@ const DashboardHome = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">100</div>
+              <div className="text-2xl font-bold">16</div>
             </CardContent>
           </Card>
 
           <Card className="w-[20rem]">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-sm font-medium">
-                No. of Flashcards to be Viewed
+                No. of Flashcards Recently Viewed
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">100</div>
+              <div className="text-2xl font-bold">14</div>
             </CardContent>
           </Card>
         </div>
