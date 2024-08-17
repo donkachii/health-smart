@@ -30,7 +30,7 @@ const GenerateFlashcards = () => {
       return;
     }
 
-    // setIsLoading(true);
+    setIsLoading(true);
 
     try {
       const response = await fetch("/api/generate", {
@@ -44,11 +44,15 @@ const GenerateFlashcards = () => {
 
       const data = await response.json();
       setCards(data);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error generating flashcards:", error);
+      setIsLoading(false);
       alert("An error occurred while generating flashcards. Please try again.");
     }
   };
+
+  console.log(cards);
 
   const flashcards = [
     {

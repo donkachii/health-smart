@@ -44,9 +44,7 @@ export async function POST(req) {
     response_format: { type: "json_object" },
   });
 
-  // console.log("completion", completion.choices[0].message.content);
   const flashcards = completion.choices[0].message.content;
-  // console.log("🚀 ~ POST ~ flashcards:", flashcards);
 
   return NextResponse.json(flashcards, { status: 200 });
 }
