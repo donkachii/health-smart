@@ -2,7 +2,7 @@
 
 import { Separator } from "@/components/ui/separator";
 import clsx from "clsx";
-import { Banknote, Folder, HomeIcon, Settings, BotIcon } from "lucide-react";
+import { Folder, HomeIcon, Settings, BotIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaTasks } from "react-icons/fa";
@@ -35,7 +35,7 @@ export default function DashboardSideBar() {
               </div>
               Home
             </Link>
-            <Link
+            {/* <Link
               className={clsx(
                 "flex items-center gap-2 rounded-lg px-3 py-4 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50",
                 {
@@ -49,7 +49,7 @@ export default function DashboardSideBar() {
                 <BotIcon className="w-3 h-3" />
               </div>
               Generate Flashcard
-            </Link>
+            </Link> */}
             <Link
               className={clsx(
                 "flex items-center gap-2 rounded-lg px-3 py-4 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50",
