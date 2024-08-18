@@ -6,6 +6,14 @@ import { auth, googleAuthProvider } from "../../../config/firebase";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import swal from "sweetalert";
 import { useRouter } from "next/navigation";
+import { firestore } from "../../../config/firebase";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -22,6 +30,27 @@ const SignIn = () => {
       );
       const user = userCredential.user;
       const userId = user.uid; // Get the user's unique ID
+
+      if (user) {
+        const userRef = doc(firestore, "users", user.uid);
+        const docSnap = await getDoc(userRef);
+
+        if (docSnap.exists()) {
+          // User exists, update the last login time
+          await updateDoc(userRef, {
+            lastLogin: serverTimestamp(),
+          });
+        } else {
+          // User does not exist, create a new user document
+          await setDoc(userRef, {
+            name: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            createdAt: serverTimestamp(),
+            lastLogin: serverTimestamp(),
+          });
+        }
+      }
 
       // Store the uid in local storage
       localStorage.setItem("userId", userId);
@@ -51,6 +80,28 @@ const SignIn = () => {
     try {
       const result = await signInWithPopup(auth, googleAuthProvider);
       const userId = result.user.uid; // Get the user's unique ID
+      const user = result.user;
+
+      if (user) {
+        const userRef = doc(firestore, "users", user.uid);
+        const docSnap = await getDoc(userRef);
+
+        if (docSnap.exists()) {
+          // User exists, update the last login time
+          await updateDoc(userRef, {
+            lastLogin: serverTimestamp(),
+          });
+        } else {
+          // User does not exist, create a new user document
+          await setDoc(userRef, {
+            name: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            createdAt: serverTimestamp(),
+            lastLogin: serverTimestamp(),
+          });
+        }
+      }
 
       // Store the uid in local storage
       localStorage.setItem("userId", userId);
