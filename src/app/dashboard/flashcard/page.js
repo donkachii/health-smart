@@ -1,11 +1,20 @@
-import { useSearchParams } from "next/navigation";
+"use client";
+
+// import { useState } from "react";
+// import { useSearchParams } from "next/navigation";
 
 export default function Flashcard() {
-  const [flashcards, setFlashcards] = useState([]);
-  const [flipped, setFlipped] = useState({});
+  //   const [flashcards, setFlashcards] = useState([]);
+  //   const [flipped, setFlipped] = useState({});
 
-  const searchParams = useSearchParams();
-  const search = searchParams.get("id");
+  //   const searchParams = useSearchParams();
+  //   const search = searchParams.get("id");
 
-  return <></>;
+  //   console.log(search);
+
+  return (
+    <>
+      <p>Working </p>
+    </>
+  );
 }

@@ -55,14 +55,13 @@ const SignIn = () => {
       // Store the uid in local storage
       localStorage.setItem("userId", userId);
 
-      console.log("User ID:", userId);
       swal({
         title: "👏🏽",
         text: "Welcome",
         icon: "success",
         button: "OK",
       });
-      router.push("/");
+      router.push("/dashboard");
     } catch (error) {
       swal({
         title: "Oops😞",
@@ -113,7 +112,7 @@ const SignIn = () => {
         icon: "success",
         button: "OK",
       });
-      router.push("/");
+      router.push("/dashboard");
     } catch (error) {
       console.error("Error during Google Sign-In:", error);
       swal({
