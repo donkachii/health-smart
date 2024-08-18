@@ -43,12 +43,12 @@ const Nav = () => {
               <Link href="#contact">Contact</Link>
             </li>
           </ul>
-          <button className={styles.btnNav}>
-            <Link href="/signin">Login</Link>
-          </button>
-          <button className={styles.btnNav}>
-            <Link href="/signup">SignUp</Link>
-          </button>
+          <Link href="/signin">
+            <button className={styles.btnNav}>Login</button>
+          </Link>
+          <Link href="/signup">
+            <button className={styles.btnNav}>Sign Up</button>
+          </Link>
         </nav>
       </div>
     </header>
