@@ -32,7 +32,8 @@
     "stripe": "^16.7.0",
     "sweetalert": "^2.1.2",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "typewriter-effect": "^2.21.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
