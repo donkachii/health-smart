@@ -1,7 +1,6 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-// import ModeToggle from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose } from "@/components/ui/dialog";
 import {
@@ -18,38 +17,41 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Separator } from "@/components/ui/separator";
 import {
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
-// import config from "@/config";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import {
   BotIcon,
   Folder,
   HomeIcon,
-  Cloud,
   CreditCard,
-  Github,
-  Keyboard,
-  LifeBuoy,
   LogOut,
-  Mail,
-  MessageSquare,
-  Plus,
-  PlusCircle,
   Settings,
   User,
-  UserPlus,
-  Users,
 } from "lucide-react";
+
+import { Separator } from "@/components/ui/separator";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { signOut } from "firebase/auth";
 import Link from "next/link";
+import { auth } from "../../../../config/firebase";
+import { useRouter } from "next/navigation";
 
 export default function DashboardTopNav({ children }) {
+  const router = useRouter();
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      localStorage.removeItem("userId");
+      router.push("/");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col">
       <header className="flex h-14 lg:h-[55px] items-center gap-4 border-b px-3">
@@ -138,7 +140,7 @@ export default function DashboardTopNav({ children }) {
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={handleSignOut}>
                 <LogOut className="w-4 h-4 mr-2" />
                 <span>Log out</span>
                 <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

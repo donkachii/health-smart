@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
@@ -29,7 +29,7 @@ import {
 
 const GenerateFlashcards = () => {
   const [cards, setCards] = useState([]);
-  const [flipped, setFlipped] = useState([]);
+  const [userId, setUserId] = useState("");
   const [text, setText] = useState("");
   const [name, setName] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -38,17 +38,10 @@ const GenerateFlashcards = () => {
 
   const router = useRouter();
 
-  const userId = localStorage.getItem("userId");
-
-  // useEffect(() => {
-  //   // Load flashcards from Firebase
-  //   const loadFlashcards = async () => {
-  //     const querySnapshot = await getDocs(collection(db, "flashcards"));
-  //     const loadedCards = querySnapshot.docs.map((doc) => doc.data());
-  //     setCards(loadedCards);
-  //   };
-  //   loadFlashcards();
-  // }, []);
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    setUserId(userId);
+  }, []);
 
   const handleGenerateFlashcard = async () => {
     if (!text.trim()) {
@@ -148,6 +141,8 @@ const GenerateFlashcards = () => {
             {isLoading ? "Generating..." : "Generate"}
           </button>
         </div>
+
+        {/* Save Dialog */}
         {cards.length > 0 && (
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
