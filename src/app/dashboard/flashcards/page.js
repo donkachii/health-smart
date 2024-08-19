@@ -1,62 +1,56 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { firestore } from "../../../../config/firebase";
+import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const Flashcards = () => {
-  const [cards, setCards] = useState([]);
-  const [flipped, setFlipped] = useState([]);
-  const [text, setText] = useState("");
-  const [name, setName] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-
+  const [flashcards, setFlashcards] = useState([]);
   const router = useRouter();
 
-  const handleSubmit = async () => {};
+  const userId = localStorage.getItem("userId");
 
-  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    async function getFlashcards() {
+      if (!userId) return;
+      const docRef = doc(collection(firestore, "users"), userId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const collections = docSnap.data().flashcardSets || [];
+        setFlashcards(collections);
+      } else {
+        await setDoc(docRef, { flashcardSets: [] });
+      }
+    }
+    getFlashcards();
+  }, [userId]);
 
-  // useEffect(() => {
-  //   // Load flashcards from Firebase
-  //   const loadFlashcards = async () => {
-  //     const querySnapshot = await getDocs(collection(db, "flashcards"));
-  //     const loadedCards = querySnapshot.docs.map((doc) => doc.data());
-  //     setCards(loadedCards);
-  //   };
-  //   loadFlashcards();
-  // }, []);
-
-  console.log(cards);
+  const handleCardClick = (id) => {
+    router.push(`/dashboard/flashcard?id=${id}`);
+  };
 
   return (
     <div className="container px-4 py-8 mx-auto">
-      <h1 className="mb-6 text-2xl font-semibold">Flashcard</h1>
-      <div className="flex mb-8 space-x-2">
-        <input
-          type="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Enter a topic"
-          className="px-4 py-2 border rounded"
-        />
-        <button
-          disabled={isLoading}
-          className="px-4 py-2 text-white transition-colors duration-300 bg-blue-500 rounded hover:bg-blue-600 disabled:bg-gray-400"
-        >
-          {isLoading ? "Generating..." : "Generate Flashcard"}
-        </button>
-      </div>
-      <div className="grid grid-cols-1 gap-6 mt-6 md:grid-cols-2">
-        {/* <TopicSuggestions />
-        <BatchGenerationOptions /> */}
-      </div>
-
-      {/* {cards.length > 0 ? (
-        <FlashcardDeck cards={cards} />
-      ) : (
-        <p>No flashcards yet. Generate so
-        me!</p>
-      )} */}
+      <h1 className="mb-6 text-2xl font-semibold">All Flashcard</h1>
+      {flashcards.length > 0 && (
+        <div className="grid grid-cols-1 gap-6 mt-6 md:grid-cols-2 lg:grid-cols-3">
+          {flashcards.map((card, i) => {
+            let name = card.name;
+            return (
+              <Button
+                className="py-12 cursor-pointer group"
+                key={i}
+                onClick={() => handleCardClick(name)}
+              >
+                {name.charAt(0).toUpperCase() + name.slice(1)}
+              </Button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

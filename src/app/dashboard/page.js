@@ -31,7 +31,6 @@ const DashboardHome = () => {
 
   return (
     <div className="container px-4 py-8 mx-auto">
-      {/* Overview */}
       <section>
         <h2 className="text-2xl font-semibold">Recent</h2>
         <div className="grid grid-cols-3 gap-2 mt-4">
