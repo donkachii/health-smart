@@ -1,30 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "./ui/dialog";
+import BeatLoader from "react-spinners/BeatLoader";
+import { Input } from "./ui/input";
+import swal from "sweetalert";
+import { firestore } from "../../config/firebase";
+import {
+  doc,
+  getDoc,
+  collection,
+  writeBatch,
+  setDoc,
+  updateDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 
 const GenerateFlashcards = () => {
   const [cards, setCards] = useState([]);
-  const [flipped, setFlipped] = useState([]);
+  const [userId, setUserId] = useState("");
   const [text, setText] = useState("");
   const [name, setName] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSaveLoading, setIsSaveLoading] = useState(false);
 
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  // useEffect(() => {
-  //   // Load flashcards from Firebase
-  //   const loadFlashcards = async () => {
-  //     const querySnapshot = await getDocs(collection(db, "flashcards"));
-  //     const loadedCards = querySnapshot.docs.map((doc) => doc.data());
-  //     setCards(loadedCards);
-  //   };
-  //   loadFlashcards();
-  // }, []);
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    setUserId(userId);
+  }, []);
 
   const handleGenerateFlashcard = async () => {
     if (!text.trim()) {
@@ -54,7 +71,53 @@ const GenerateFlashcards = () => {
     }
   };
 
-  //   console.log(cards);
+  const handleSave = async () => {
+    if (!name.trim()) {
+      alert("Please enter a name for the flashcards.");
+      return;
+    }
+
+    try {
+      setIsSaveLoading(true);
+      const userDocRef = doc(collection(firestore, "users"), userId);
+      const userDocSnap = await getDoc(userDocRef);
+
+      const batch = writeBatch(firestore);
+
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        const updatedSets = [...(userData.flashcardSets || []), { name: name }];
+        batch.update(userDocRef, { flashcardSets: updatedSets });
+      } else {
+        batch.set(userDocRef, { flashcardSets: [{ name: name }] });
+      }
+
+      const setDocRef = doc(collection(userDocRef, "flashcardSets"), name);
+      batch.set(setDocRef, { cards });
+
+      await batch.commit();
+
+      setIsSaveLoading(false);
+      setIsOpen(false);
+
+      setName("");
+
+      swal({
+        title: "👏🏽",
+        text: "Flashcards saved successfully!",
+        icon: "success",
+        button: "OK",
+      });
+    } catch (error) {
+      console.error("Error saving flashcards:", error);
+      swal({
+        title: "Oops😞",
+        text: "An error occurred while saving flashcards. Please try again.",
+        icon: "error",
+        button: "OK",
+      });
+    }
+  };
 
   return (
     <div className="mt-12">
@@ -78,13 +141,43 @@ const GenerateFlashcards = () => {
             {isLoading ? "Generating..." : "Generate"}
           </button>
         </div>
+
+        {/* Save Dialog */}
         {cards.length > 0 && (
-          <Button
-            className="px-4 py-2 text-white transition-colors duration-300 bg-green-500 rounded hover:bg-green-600 disabled:bg-gray-400"
-            // onClick={handleSave}
-          >
-            Save
-          </Button>
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <Button className="px-4 py-2 text-white transition-colors duration-300 bg-green-500 rounded hover:bg-green-600 disabled:bg-green-400">
+                Save
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Save Flashcard</DialogTitle>
+                <DialogDescription>
+                  Add your flashcard folder name here. Click save when you're
+                  done.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid items-center grid-cols-4 gap-4">
+                  <Input
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="col-span-full"
+                  />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button
+                  onClick={handleSave}
+                  className="transition-colors duration-300 bg-green-500 rounded hover:bg-green-600 disabled:bg-green-400"
+                >
+                  {isSaveLoading ? <BeatLoader /> : "Save changes"}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         )}
       </div>
       {cards.length > 0 && (
