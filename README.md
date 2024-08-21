@@ -25,7 +25,7 @@
 ## About The Project
 HealthSamrt is an innovative flashcard SaaS designed to supercharge your learning experience. Powered by Next.js, Clerk, Firebase, OpenAI, and Stripe. HealthSmart offers seamless user authentication, real-time data management, and AI-driven content generation.
 
-Your ultimate pantry management solution. 
+ 
     
 ### Key Features
 - **Powered by Next.js:** Enjoy a fast and responsive user interface for a smooth learning experience.
@@ -36,8 +36,8 @@ Your ultimate pantry management solution.
 
 ### Overview
 
-* [Repo Codes](https://health-smart.vercel.app/)
-* [Hosted Link](https://github.com/donkachii/health-smart)
+* [Repo Codes](https://github.com/donkachii/health-smart)
+* [Hosted Link](https://health-smart.vercel.app/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
